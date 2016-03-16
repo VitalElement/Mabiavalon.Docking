@@ -137,11 +137,6 @@
     <Compile Include="Core\TabHeaderDragStartInformation.cs" />
     <Compile Include="DockItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Referenceless\AnonymousDisposable.cs" />
-    <Compile Include="Referenceless\DefaultDisposable.cs" />
-    <Compile Include="Referenceless\Disposable.cs" />
-    <Compile Include="Referenceless\ICancelable.cs" />
-    <Compile Include="Referenceless\SerialDisposable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
