@@ -147,7 +147,11 @@
     <Compile Include="Core\CollectionTeaser.cs" />
     <Compile Include="Core\FuncComparer.cs" />
     <Compile Include="Core\TabHeaderDragStartInformation.cs" />
+    <Compile Include="DockDragCompletedEventArgs.cs" />
+    <Compile Include="DockDragDeltaEventArgs.cs" />
+    <Compile Include="DockDragStartedEventArgs.cs" />
     <Compile Include="DockItem.cs" />
+    <Compile Include="DockItemEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
