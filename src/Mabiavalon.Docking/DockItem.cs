@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Perspex;
 using Perspex.Controls;
 using Perspex.Controls.Primitives;
 using Perspex.Input;
+using Perspex.Input.Raw;
 using Perspex.Interactivity;
+using Perspex.Threading;
+using Perspex.VisualTree;
 
 namespace Mabiavalon
 {
@@ -44,7 +49,6 @@ namespace Mabiavalon
         private double _y;
         private double _x;      
         private bool _isSelected;
-        private bool _isCustomThumb;
 
         public static readonly DirectProperty<DockItem, int> LogicalIndexProperty =
             PerspexProperty.RegisterDirect<DockItem, int>("LogicalIndex", o => o.LogicalIndex);
@@ -68,13 +72,13 @@ namespace Mabiavalon
                 (o, v) => o.IsSelected = v);
 
         public static readonly AttachedProperty<SizeGrip> SizeGripProperty =
-            PerspexProperty.RegisterAttached<DockItem, Control, SizeGrip>("SizeGrip");
+            PerspexProperty.RegisterAttached<DockItem, Thumb, SizeGrip>("SizeGrip");
 
         public static readonly AttachedProperty<double> ContentRotateTransformAngleProperty =
-            PerspexProperty.RegisterAttached<DockItem, Control, double>("ContentRotateTransformAngle");
+            PerspexProperty.RegisterAttached<DockItem, Thumb, double>("ContentRotateTransformAngle");
 
         public static readonly AttachedProperty<bool> IsCustomThumbProperty =
-            PerspexProperty.RegisterAttached<DockItem, Control, bool>("IsCustomThumb");
+            PerspexProperty.RegisterAttached<DockItem, Thumb, bool>("IsCustomThumb");
 
         public static readonly RoutedEvent<RoutedEventArgs> ClickEvent =
             RoutedEvent.Register<DockItem, RoutedEventArgs>("Click", RoutingStrategies.Bubble);
@@ -100,6 +104,12 @@ namespace Mabiavalon
         static DockItem()
         {
             // StyleOverride
+            XProperty.Changed.AddClassHandler<DockItem>(x => x.OnXChanged);
+            YProperty.Changed.AddClassHandler<DockItem>(x => x.OnYChanged);
+            LogicalIndexProperty.Changed.AddClassHandler<DockItem>(x => x.OnLogicalIndexChanged);
+            SizeGripProperty.Changed.AddClassHandler<DockItem>(x => x.OnSizeGripChanged);
+            IsDraggingProperty.Changed.AddClassHandler<DockItem>(x => x.OnIsDraggingChanged);
+            IsSiblingDraggingProperty.Changed.AddClassHandler<DockItem>(x => x.OnIsSiblingDraggingChanged);
         }
 
         public DockItem()
@@ -220,11 +230,218 @@ namespace Mabiavalon
             element.SetValue(IsCustomThumbProperty, value);
         }
 
+
+        internal void InstigateDrag(Action<DockItem> continuation)
+        {
+            _dragSeizedContinuation = continuation;
+            var thumb = NameScope.GetNameScope(this).Find<Thumb>(ThumbPartName);
+            if (thumb != null)
+            {
+                MouseDevice.Instance.Capture(thumb);
+            }
+            else
+                _seizeDragWithTemplate = true;
+        }
+
+        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        {
+            base.OnTemplateApplied(e);
+
+            var thumbSubscriptions = SelectAndSubscribeToThumb();
+            _templateSubscriptions.Disposable = thumbSubscriptions.Item2;
+
+            if (_seizeDragWithTemplate && thumbSubscriptions.Item1 != null)
+            {
+                _isTemplateThumbWithMouseAfterSeize = true;
+                //Mouse.AddLostMouseCaptureHandler(this, LostMouseAfterSeizeHandler);
+                if (_dragSeizedContinuation != null)
+                    _dragSeizedContinuation(this);
+                _dragSeizedContinuation = null;
+
+                Dispatcher.UIThread.InvokeAsync(new Action(() => _thumb.RaiseEvent(new PointerPressedEventArgs(PointerPressedEvent) { MouseButton = MouseButton.Left, ClickCount = 0, Device = MouseDevice.Instance})));
+            }
+            _seizeDragWithTemplate = false;
+        }
+
+       
+
+        //private void LostMouseAfterSeizeHandler(object sender, MouseEventArgs mouseEventArgs)
+        //{
+        //    _isTemplateThumbWithMouseAfterSeize = false;
+        //    //Mouse.RemoveLostMouseCaptureHandler(this, LostMouseAfterSeizeHandler);
+        //}
+
+        private void ThumbOnDragCompleted(object sender, VectorEventArgs e)
+        {
+            //OnDragCompleted(e);
+            MouseAtDragStart = new Point();
+        }
+
+        private void ThumbOnDragDelta(object sender, VectorEventArgs e)
+        {
+            var thumb = (Thumb) sender;
+
+            //var previewEventArgs = new DcokDragDeltaEventArgs(PreviewDragDelta, this, dragDeltaEventArgs);
+            //OnPreviewDragDelta(previewEventArgs);
+            //if (previewEventArgs.Cancel)
+            //    thumb.CancelDrag();
+            //if (!previewEventArgs.Handled)
+            //{
+            //    var eventArgs = new DockDragDeltaEventArgs(DragDelta, this, dragDeltaEventArgs);
+            //    OnDragDelta(eventArgs);
+            //    if (eventArgs.Cancel)
+            //        thumb.CancelDrag();
+            //}
+        }
+
+        private void ThumbOnDragStarted(object sender, VectorEventArgs e)
+        {
+            MouseAtDragStart = MouseDevice.Instance.Position;
+            //OnDragStarted(new DockDragStartedEventArgs(DragStarted, this, dragStartedEventArgs));
+        }
+
+        private void OnXChanged(PerspexPropertyChangedEventArgs e)
+        {
+            var args = new RoutedEventArgs(XChangedEvent);
+            this.RaiseEvent(args);
+        }
+
+        private void OnYChanged(PerspexPropertyChangedEventArgs e)
+        {
+            var args = new RoutedEventArgs(YChangedEvent);
+            this.RaiseEvent(args);
+        }
+
+        private void OnLogicalIndexChanged(PerspexPropertyChangedEventArgs e)
+        {
+            var args = new RoutedEventArgs(LogicalIndexChangedEvent);
+            this.RaiseEvent(args);
+        }
+
+        private void OnSizeGripChanged(PerspexPropertyChangedEventArgs e)
+        {
+            var thumb = (e.Sender as Thumb);
+            if (thumb == null) return;
+            thumb.DragDelta += SizeThumbOnDragDelta;
+        }
+
+        private void OnIsDraggingChanged(PerspexPropertyChangedEventArgs e)
+        {
+            var args = new RoutedEventArgs(IsDraggingChangedEvent);
+            this.RaiseEvent(args);
+        }
+
+        private void OnIsSiblingDraggingChanged(PerspexPropertyChangedEventArgs e)
+        {
+            var args = new RoutedEventArgs(IsSiblingDraggingChangedEvent);
+            this.RaiseEvent(args);
+        }
+
         private Action<RoutedEventArgs> OnMouseDownWithin(DockItem dockItem)
         {
             return args => dockItem.RaiseEvent(new DockItemEventArgs(MouseDownWithinEvent, dockItem));
         }
 
-        
+        private static void ApplyCustomThumbSetting(Thumb thumb)
+        {
+            var dockItem = thumb.GetVisualAncestors().OfType<DockItem>().FirstOrDefault();
+            if (dockItem == null) throw new ApplicationException("Cannot find parent DockItem or custom Thumb");
+
+            var enableCustomThumb = thumb.GetValue(IsCustomThumbProperty);
+            dockItem._customThumb = enableCustomThumb ? thumb : null;
+            dockItem._templateSubscriptions.Disposable = dockItem.SelectAndSubscribeToThumb().Item2;
+
+            if (dockItem._customThumb!= null && dockItem._isTemplateThumbWithMouseAfterSeize)
+                Dispatcher.UIThread.InvokeAsync(new Action(() => dockItem._customThumb.RaiseEvent(new PointerPressedEventArgs(PointerPressedEvent) {ClickCount = 0, Device = MouseDevice.Instance, MouseButton = MouseButton.Left})));
+        }
+
+        private Thumb FindCustomThumb()
+        {
+            return this.GetSelfAndVisualDescendents().OfType<Thumb>().FirstOrDefault(GetIsCustomThumb);
+        }
+
+        private void SizeThumbOnDragDelta(object sender, VectorEventArgs e)
+        {
+            var thumb = (Thumb) sender;
+            var dockItem = thumb.GetVisualAncestors().OfType<DockItem>().FirstOrDefault();
+            if (dockItem == null) return;
+
+            var sizeGrip = thumb.GetValue(SizeGripProperty);
+            var width = dockItem.Width;
+            var height = dockItem.Height;
+            var x = dockItem.X;
+            var y = dockItem.Y;
+            switch (sizeGrip)
+            {
+                case SizeGrip.NotApplicable:
+                    break;
+                case SizeGrip.Left:
+                    width += -e.Vector.X;
+                    x += e.Vector.X;
+                    break;
+                case SizeGrip.TopLeft:
+                    width += -e.Vector.X;
+                    height += -e.Vector.Y;
+                    x += e.Vector.X;
+                    y += e.Vector.Y;
+                    break;
+                case SizeGrip.Top:
+                    height += -e.Vector.Y;
+                    y += e.Vector.Y;
+                    break;
+                case SizeGrip.TopRight:
+                    height += -e.Vector.Y;
+                    width += e.Vector.X;
+                    y += e.Vector.Y;
+                    break;
+                case SizeGrip.Right:
+                    width += e.Vector.X;
+                    break;
+                case SizeGrip.BottomRight:
+                    width += e.Vector.X;
+                    height += e.Vector.Y;
+                    break;
+                case SizeGrip.Bottom:
+                    height += e.Vector.Y;
+                    break;
+                case SizeGrip.BottomLeft:
+                    height += e.Vector.Y;
+                    width += -e.Vector.X;
+                    x += e.Vector.X;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            dockItem.SetValue(XProperty, x);
+            dockItem.SetValue(YProperty, y);
+            dockItem.SetValue(WidthProperty, Math.Max(width, thumb.DesiredSize.Width));
+            dockItem.SetValue(HeightProperty, Math.Max(height, thumb.DesiredSize.Height));
+        }
+
+        private Tuple<Thumb, IDisposable> SelectAndSubscribeToThumb()
+        {
+            var templateThumb = NameScope.GetNameScope(this).Find<Thumb>(ThumbPartName);
+            templateThumb?.SetValue(IsHitTestVisibleProperty, _customThumb == null);
+
+            _thumb = _customThumb ?? templateThumb;
+            if (_thumb != null)
+            {
+                _thumb.DragStarted += ThumbOnDragStarted;
+                _thumb.DragDelta += ThumbOnDragDelta;
+                _thumb.DragCompleted += ThumbOnDragCompleted;
+            }
+
+            var tidyUpThumb = _thumb;
+            var disposable = Disposable.Create(() =>
+            {
+                if (tidyUpThumb == null) return;
+                tidyUpThumb.DragStarted -= ThumbOnDragStarted;
+                tidyUpThumb.DragDelta -= ThumbOnDragDelta;
+                tidyUpThumb.DragCompleted -= ThumbOnDragCompleted;
+            });
+
+            return new Tuple<Thumb, IDisposable>(_thumb, disposable);
+        } 
     }
 }
