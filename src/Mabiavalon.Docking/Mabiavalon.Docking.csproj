@@ -154,7 +154,14 @@
     <Compile Include="Docking\Branch.cs" />
     <Compile Include="DockItem.cs" />
     <Compile Include="DockItemEventArgs.cs" />
+    <Compile Include="DockItemsControl.cs" />
+    <Compile Include="IInterLayoutClient.cs" />
+    <Compile Include="IInterTabClient.cs" />
+    <Compile Include="IItemsOrganizer.cs" />
+    <Compile Include="IManualInterTabClient.cs" />
+    <Compile Include="INewTabHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TabEmptiedResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

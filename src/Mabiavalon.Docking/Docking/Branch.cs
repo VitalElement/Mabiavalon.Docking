@@ -21,13 +21,15 @@ namespace Mabiavalon.Docking
             PerspexProperty.Register<Branch, object>("FirstItem");
 
         public static readonly StyledProperty<GridLength> FirstItemLengthProperty =
-            PerspexProperty.Register<Branch, GridLength>("FirstItemLenth", new GridLength(0.49999, GridUnitType.Star), defaultBindingMode: BindingMode.TwoWay); 
+            PerspexProperty.Register<Branch, GridLength>("FirstItemLenth", 
+                new GridLength(0.49999, GridUnitType.Star), defaultBindingMode: BindingMode.TwoWay); 
 
         public static readonly StyledProperty<object> SecondItemProperty =
             PerspexProperty.Register<Branch, object>("SecondItem"); 
 
         public static readonly StyledProperty<GridLength> SecondItemLengthProperty =
-           PerspexProperty.Register<Branch, GridLength>("SecondItemLenth", new GridLength(0.50001, GridUnitType.Star), defaultBindingMode: BindingMode.TwoWay);
+           PerspexProperty.Register<Branch, GridLength>("SecondItemLenth", 
+               new GridLength(0.50001, GridUnitType.Star), defaultBindingMode: BindingMode.TwoWay);
 
         public Branch()
         {
