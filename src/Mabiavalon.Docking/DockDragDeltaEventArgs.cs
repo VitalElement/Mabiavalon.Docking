@@ -30,7 +30,8 @@ namespace Mabiavalon
             _dragDeltaEventArgs = dragDeltaEventArgs;
         }
 
-        public DockDragDeltaEventArgs(RoutedEvent routedEvent, IInteractive source, DockItem dockItem, VectorEventArgs dragDeltaEventArgs)
+        public DockDragDeltaEventArgs(RoutedEvent routedEvent, IInteractive source, DockItem dockItem,
+            VectorEventArgs dragDeltaEventArgs)
             : base(routedEvent, source, dockItem)
         {
             if (dragDeltaEventArgs == null) throw new ArgumentNullException("dragDeltaEventArgs");

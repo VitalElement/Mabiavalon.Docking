@@ -25,7 +25,8 @@ namespace Mabiavalon
             _dragCompletedEventArgs = dragCompletedEventArgs;
         }
 
-        public DockDragCompletedEventArgs(RoutedEvent routedEvent, DockItem dockItem, VectorEventArgs dragCompletedEventArgs)
+        public DockDragCompletedEventArgs(RoutedEvent routedEvent, DockItem dockItem,
+            VectorEventArgs dragCompletedEventArgs)
             : base(routedEvent)
         {
             if (dockItem == null) throw new ArgumentNullException("dockItem");
@@ -35,7 +36,8 @@ namespace Mabiavalon
             _dragCompletedEventArgs = dragCompletedEventArgs;
         }
 
-        public DockDragCompletedEventArgs(RoutedEvent routedEvent, IInteractive source, DockItem dockItem, VectorEventArgs dragCompletedEventArgs)
+        public DockDragCompletedEventArgs(RoutedEvent routedEvent, IInteractive source, DockItem dockItem,
+            VectorEventArgs dragCompletedEventArgs)
             : base(routedEvent, source)
         {
             if (dockItem == null) throw new ArgumentNullException("dockItem");

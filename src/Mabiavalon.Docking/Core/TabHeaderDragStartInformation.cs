@@ -16,7 +16,8 @@ namespace Mabiavalon.Core
 
         public TabHeaderDragStartInformation(
             DockItem dockItem,
-            double dockItemsControlHorizontalOffset, double dockItemControlVerticalOffset, double dockItemHorizontalOffset, double dockItemVerticalOffset)
+            double dockItemsControlHorizontalOffset, double dockItemControlVerticalOffset,
+            double dockItemHorizontalOffset, double dockItemVerticalOffset)
         {
             if (dockItem == null) throw new ArgumentNullException("dragItem");
 

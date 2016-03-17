@@ -47,7 +47,7 @@ namespace Mabiavalon
         private bool _isDragging;
         private bool _isSiblingDragging;
         private double _y;
-        private double _x;      
+        private double _x;
         private bool _isSelected;
 
         public static readonly DirectProperty<DockItem, int> LogicalIndexProperty =
@@ -258,12 +258,19 @@ namespace Mabiavalon
                     _dragSeizedContinuation(this);
                 _dragSeizedContinuation = null;
 
-                Dispatcher.UIThread.InvokeAsync(new Action(() => _thumb.RaiseEvent(new PointerPressedEventArgs(PointerPressedEvent) { MouseButton = MouseButton.Left, ClickCount = 0, Device = MouseDevice.Instance})));
+                Dispatcher.UIThread.InvokeAsync(
+                    new Action(
+                        () =>
+                            _thumb.RaiseEvent(new PointerPressedEventArgs(PointerPressedEvent)
+                            {
+                                MouseButton = MouseButton.Left,
+                                ClickCount = 0,
+                                Device = MouseDevice.Instance
+                            })));
             }
             _seizeDragWithTemplate = false;
         }
 
-       
 
         //private void LostMouseAfterSeizeHandler(object sender, MouseEventArgs mouseEventArgs)
         //{
@@ -351,8 +358,16 @@ namespace Mabiavalon
             dockItem._customThumb = enableCustomThumb ? thumb : null;
             dockItem._templateSubscriptions.Disposable = dockItem.SelectAndSubscribeToThumb().Item2;
 
-            if (dockItem._customThumb!= null && dockItem._isTemplateThumbWithMouseAfterSeize)
-                Dispatcher.UIThread.InvokeAsync(new Action(() => dockItem._customThumb.RaiseEvent(new PointerPressedEventArgs(PointerPressedEvent) {ClickCount = 0, Device = MouseDevice.Instance, MouseButton = MouseButton.Left})));
+            if (dockItem._customThumb != null && dockItem._isTemplateThumbWithMouseAfterSeize)
+                Dispatcher.UIThread.InvokeAsync(
+                    new Action(
+                        () =>
+                            dockItem._customThumb.RaiseEvent(new PointerPressedEventArgs(PointerPressedEvent)
+                            {
+                                ClickCount = 0,
+                                Device = MouseDevice.Instance,
+                                MouseButton = MouseButton.Left
+                            })));
         }
 
         private Thumb FindCustomThumb()
@@ -442,6 +457,6 @@ namespace Mabiavalon
             });
 
             return new Tuple<Thumb, IDisposable>(_thumb, disposable);
-        } 
+        }
     }
 }

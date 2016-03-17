@@ -28,7 +28,8 @@ namespace Mabiavalon
             _dragStartedEventArgs = dragStartedEventArgs;
         }
 
-        public DockDragStartedEventArgs(RoutedEvent routedEvent, IInteractive source, DockItem dockItem, VectorEventArgs dragStartedEventArgs)
+        public DockDragStartedEventArgs(RoutedEvent routedEvent, IInteractive source, DockItem dockItem,
+            VectorEventArgs dragStartedEventArgs)
             : base(routedEvent, source, dockItem)
         {
             _dragStartedEventArgs = dragStartedEventArgs;
