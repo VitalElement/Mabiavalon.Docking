@@ -11,6 +11,6 @@ namespace Mabiavalon
     {
         TControl Container { get; }
 
-        DockControl AvalonViewControl { get; }
+        DockControl DockControl { get; }
     }
 }

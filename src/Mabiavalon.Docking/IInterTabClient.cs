@@ -25,9 +25,9 @@ namespace Mabiavalon
         /// <summary>
         /// Called when a tab has been emptied, and thus typically a window needs closing.
         /// </summary>
-        /// <param name="tabControl"></param>
+        /// <param name="dockControl"></param>
         /// <param name="window"></param>
         /// <returns></returns>
-        TabEmptiedResponse TabEmptiedHandler(DockControl tabControl, Window window);
+        TabEmptiedResponse TabEmptiedHandler(DockControl dockControl, Window window);
     }
 }

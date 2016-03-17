@@ -162,7 +162,7 @@ namespace Mabiavalon
         public int LogicalIndex
         {
             get { return _logicalIndex; }
-            private set { SetAndRaise(LogicalIndexProperty, ref _logicalIndex, value); }
+            internal set { SetAndRaise(LogicalIndexProperty, ref _logicalIndex, value); }
         }
 
         public bool IsDragging
