@@ -144,6 +144,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CanvasOrganizer.cs" />
     <Compile Include="Core\CollectionTeaser.cs" />
     <Compile Include="Core\FuncComparer.cs" />
     <Compile Include="Core\MultiComparer.cs" />
@@ -158,6 +159,9 @@
     <Compile Include="DockItem.cs" />
     <Compile Include="DockItemEventArgs.cs" />
     <Compile Include="DockItemsControl.cs" />
+    <Compile Include="EmptyHeaderSizingHint.cs" />
+    <Compile Include="HeaderedDockItem.cs" />
+    <Compile Include="HorizontalOrganizer.cs" />
     <Compile Include="IInterLayoutClient.cs" />
     <Compile Include="IInterTabClient.cs" />
     <Compile Include="IItemsOrganizer.cs" />
@@ -167,6 +171,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StackOrganizer.cs" />
     <Compile Include="TabEmptiedResponse.cs" />
+    <Compile Include="VerticalOrganizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
