@@ -157,6 +157,7 @@
     <Compile Include="DockDragDeltaEventArgs.cs" />
     <Compile Include="DockDragStartedEventArgs.cs" />
     <Compile Include="Docking\Branch.cs" />
+    <Compile Include="Docking\BranchAccessor.cs" />
     <Compile Include="Docking\FloatingItemSnapShot.cs" />
     <Compile Include="DockItem.cs" />
     <Compile Include="DockItemEventArgs.cs" />
