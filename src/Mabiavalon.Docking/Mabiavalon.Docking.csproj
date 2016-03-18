@@ -170,6 +170,7 @@
     <Compile Include="Docking\LocationReportBuilder.cs" />
     <Compile Include="Docking\LocationReportException.cs" />
     <Compile Include="Docking\LocationSnapShot.cs" />
+    <Compile Include="Docking\TilerCalculator.cs" />
     <Compile Include="DockItem.cs" />
     <Compile Include="DockItemEventArgs.cs" />
     <Compile Include="DockItemsControl.cs" />
