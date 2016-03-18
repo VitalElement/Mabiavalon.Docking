@@ -168,6 +168,7 @@
     <Compile Include="Docking\LayoutAccessor.cs" />
     <Compile Include="Docking\LocationReport.cs" />
     <Compile Include="Docking\LocationReportBuilder.cs" />
+    <Compile Include="Docking\LocationReportException.cs" />
     <Compile Include="DockItem.cs" />
     <Compile Include="DockItemEventArgs.cs" />
     <Compile Include="DockItemsControl.cs" />
