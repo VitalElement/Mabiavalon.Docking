@@ -165,6 +165,9 @@
     <Compile Include="Docking\Extensions.cs" />
     <Compile Include="Docking\Finder.cs" />
     <Compile Include="Docking\FloatingItemSnapShot.cs" />
+    <Compile Include="Docking\FloatRequestedEventArgs.cs" />
+    <Compile Include="Docking\FloatTransfer.cs" />
+    <Compile Include="Docking\Layout.cs" />
     <Compile Include="Docking\LayoutAccessor.cs" />
     <Compile Include="Docking\LocationReport.cs" />
     <Compile Include="Docking\LocationReportBuilder.cs" />
@@ -185,9 +188,11 @@
     <Compile Include="IItemsOrganizer.cs" />
     <Compile Include="IManualInterTabClient.cs" />
     <Compile Include="INewTabHost.cs" />
-    <Compile Include="InterTabTransfer.cs" />
+    <Compile Include="Core\InterTabTransfer.cs" />
     <Compile Include="ItemActionCallbackArgs.cs" />
     <Compile Include="LocationChangedEventArgs.cs" />
+    <Compile Include="LocationHint.cs" />
+    <Compile Include="MoveItemRequest.cs" />
     <Compile Include="NewTabHost.cs" />
     <Compile Include="OrderChangedEventArgs.cs" />
     <Compile Include="PositionMonitor.cs" />

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Mabiavalon.Docking;
 using Perspex;
 using Perspex.Controls;
 
-namespace Mabiavalon
+namespace Mabiavalon.Core
 {
     internal enum InterTabTransferReason
     {
