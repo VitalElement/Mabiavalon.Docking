@@ -10,6 +10,7 @@ using Perspex.Controls;
 using Perspex.Controls.Primitives;
 using Perspex.Input;
 using Perspex.Styling;
+using Perspex.VisualTree;
 
 namespace Mabiavalon
 {
@@ -37,31 +38,13 @@ namespace Mabiavalon
 
         static DockControl()
         {
-            DockItem.DragStartedEvent.AddClassHandler<DockControl>(ItemDragStart);
-            DockItem.DragDeltaEvent.AddClassHandler<DockControl>(ItemDragDelta);
-            DockItem.PreviewDragDeltaEvent.AddClassHandler<DockControl>(ItemPreviewDragDelta);
-            DockItem.DragCompletedEvent.AddClassHandler<DockControl>(ItemDragCompleted);
+            DockItem.DragStartedEvent.AddClassHandler<DockControl>(x => x.OnItemDragStart);
+            DockItem.DragDeltaEvent.AddClassHandler<DockControl>(x => x.OnItemDragDelta);
+            DockItem.PreviewDragDeltaEvent.AddClassHandler<DockControl>(x => x.OnItemPreviewDragDelta);
+            DockItem.DragCompletedEvent.AddClassHandler<DockControl>(x => x.OnItemDragCompleted);
         }
 
-        private static Action<DockDragStartedEventArgs> ItemDragStart(DockControl arg)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static Action<DockDragDeltaEventArgs> ItemDragDelta(DockControl arg)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static Action<DockDragDeltaEventArgs> ItemPreviewDragDelta(DockControl arg)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static Action<DockDragCompletedEventArgs> ItemDragCompleted(DockControl arg)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         /// <summary>
         /// Default constructor.
@@ -136,6 +119,26 @@ namespace Mabiavalon
         }
 
         public void AddToSource(object content)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnItemDragStart(DockDragStartedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnItemDragDelta(DockDragDeltaEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnItemPreviewDragDelta(DockDragDeltaEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnItemDragCompleted(DockDragCompletedEventArgs e)
         {
             throw new NotImplementedException();
         }

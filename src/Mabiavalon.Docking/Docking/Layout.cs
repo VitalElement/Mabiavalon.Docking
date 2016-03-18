@@ -303,7 +303,10 @@ namespace Mabiavalon.Docking
 
         private void MonitorDropZones(Point cursorPos)
         {
-            new NotImplementedException();
+            var window = this.GetLogicalAncestors().OfType<TopLevel>().FirstOrDefault() as Window;
+            if (window == null) return;
+
+
         }
 
         /// <summary>
