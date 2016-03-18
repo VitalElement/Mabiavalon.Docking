@@ -186,6 +186,7 @@
     <Compile Include="IManualInterTabClient.cs" />
     <Compile Include="INewTabHost.cs" />
     <Compile Include="InterTabTransfer.cs" />
+    <Compile Include="ItemActionCallbackArgs.cs" />
     <Compile Include="LocationChangedEventArgs.cs" />
     <Compile Include="NewTabHost.cs" />
     <Compile Include="OrderChangedEventArgs.cs" />
