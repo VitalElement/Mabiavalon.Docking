@@ -164,6 +164,7 @@
     <Compile Include="HeaderedDockItem.cs" />
     <Compile Include="HeaderedItemViewModel.cs" />
     <Compile Include="HorizontalOrganizer.cs" />
+    <Compile Include="HorizontalPositionMonitor.cs" />
     <Compile Include="IInterLayoutClient.cs" />
     <Compile Include="IInterTabClient.cs" />
     <Compile Include="IItemsOrganizer.cs" />
