@@ -36,5 +36,10 @@ namespace Mabiavalon
         {
             throw new NotImplementedException();
         }
+
+        internal void MoveItem(MoveItemRequest moveItemRequest)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -30,7 +30,8 @@ namespace Mabiavalon
         public static readonly StyledProperty<Style> CustomHeaderItemStyleProperty =
             PerspexProperty.Register<DockControl, Style>("CustomHeaderItemStyle");
 
-        
+        public static readonly StyledProperty<InterTabController> InterTabControllerProperty =
+            PerspexProperty.Register<DockControl, InterTabController>("InterTabController");
 
         static DockControl()
         {
@@ -49,6 +50,12 @@ namespace Mabiavalon
         {
             get { return GetValue(CustomHeaderItemStyleProperty); }
             set { SetValue(CustomHeaderItemStyleProperty, value); }
+        }
+
+        public InterTabController InterTabController
+        {
+            get { return GetValue(InterTabControllerProperty); }
+            set { SetValue(InterTabControllerProperty, value); }
         }
 
         /// <summary>
@@ -90,6 +97,16 @@ namespace Mabiavalon
         public static IEnumerable<DockControl> GetLoadedInstances()
         {
             return LoadedInstances.ToList();
+        }
+
+        public void RemoveItem(DockItem dockItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddToSource(object content)
+        {
+            throw new NotImplementedException();
         }
     }
 }
