@@ -21,7 +21,7 @@ namespace Mabiavalon.Docking
                 loadedInstance.Query().Visit(
                     locationReportBuilder,
                     BranchVisitor,
-                    AvalonViewControlVisitor
+                    DockControlVisitor
                     );
 
                 if (locationReportBuilder.IsFound)
