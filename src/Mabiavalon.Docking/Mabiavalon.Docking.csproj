@@ -171,10 +171,12 @@
     <Compile Include="INewTabHost.cs" />
     <Compile Include="LocationChangedEventArgs.cs" />
     <Compile Include="NewTabHost.cs" />
+    <Compile Include="OrderChangedEventArgs.cs" />
     <Compile Include="PositionMonitor.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StackOrganizer.cs" />
+    <Compile Include="StackPositionMonitor.cs" />
     <Compile Include="TabEmptiedResponse.cs" />
     <Compile Include="VerticalOrganizer.cs" />
   </ItemGroup>
