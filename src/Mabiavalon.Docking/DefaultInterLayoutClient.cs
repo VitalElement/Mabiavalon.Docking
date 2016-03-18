@@ -7,7 +7,7 @@ using Perspex.Controls;
 
 namespace Mabiavalon
 {
-    public class DefaultInterLayutClient : IInterLayoutClient
+    public class DefaultInterLayoutClient : IInterLayoutClient
     {
         public INewTabHost<Control> GetNewHost(object partition, DockControl source)
         {
