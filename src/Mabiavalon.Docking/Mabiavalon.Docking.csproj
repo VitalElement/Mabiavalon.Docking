@@ -162,6 +162,7 @@
     <Compile Include="Docking\BranchResult.cs" />
     <Compile Include="Docking\DropZone.cs" />
     <Compile Include="Docking\DropZoneLocation.cs" />
+    <Compile Include="Docking\Extensions.cs" />
     <Compile Include="Docking\FloatingItemSnapShot.cs" />
     <Compile Include="DockItem.cs" />
     <Compile Include="DockItemEventArgs.cs" />
