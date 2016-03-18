@@ -101,6 +101,18 @@ namespace Mabiavalon
         public static readonly RoutedEvent<RoutedEventArgs> IsSiblingDraggingChangedEvent =
             RoutedEvent.Register<DockItem, RoutedEventArgs>("IsSiblingDraggingChanged", RoutingStrategies.Bubble);
 
+        public static readonly RoutedEvent<DockDragStartedEventArgs> DragStartedEvent =
+            RoutedEvent.Register<DockItem, DockDragStartedEventArgs>("DragStarted", RoutingStrategies.Bubble);
+
+        public static readonly RoutedEvent<DockDragDeltaEventArgs> DragDeltaEvent =
+            RoutedEvent.Register<DockItem, DockDragDeltaEventArgs>("DragDelta", RoutingStrategies.Bubble);
+
+        public static readonly RoutedEvent<DockDragDeltaEventArgs> PreviewDragDeltaEvent =
+            RoutedEvent.Register<DockItem, DockDragDeltaEventArgs>("PreviewDragDelta", RoutingStrategies.Bubble);
+
+        public static readonly RoutedEvent<DockDragCompletedEventArgs> DragCompletedEvent =
+            RoutedEvent.Register<DockItem, DockDragCompletedEventArgs>("DragCompleted", RoutingStrategies.Bubble);
+
         static DockItem()
         {
             // StyleOverride
@@ -110,11 +122,15 @@ namespace Mabiavalon
             SizeGripProperty.Changed.AddClassHandler<DockItem>(x => x.OnSizeGripChanged);
             IsDraggingProperty.Changed.AddClassHandler<DockItem>(x => x.OnIsDraggingChanged);
             IsSiblingDraggingProperty.Changed.AddClassHandler<DockItem>(x => x.OnIsSiblingDraggingChanged);
+            
         }
+
+        
 
         public DockItem()
         {
             ClickEvent.AddClassHandler<DockItem>(x => x.OnMouseDownWithin(this), handledEventsToo: true);
+            
         }
 
         public event EventHandler<RoutedEventArgs> Click
@@ -157,6 +173,30 @@ namespace Mabiavalon
         {
             add { AddHandler(IsSiblingDraggingChangedEvent, value); }
             remove { RemoveHandler(IsSiblingDraggingChangedEvent, value); }
+        }
+
+        public event EventHandler<DockDragStartedEventArgs> DragStarted
+        {
+            add { AddHandler(DragStartedEvent, value); }
+            remove { RemoveHandler(DragStartedEvent, value); }
+        }
+
+        public event EventHandler<DockDragDeltaEventArgs> DragDelta
+        {
+            add { AddHandler(DragDeltaEvent, value); }
+            remove { RemoveHandler(DragDeltaEvent, value); }
+        }
+
+        public event EventHandler<DockDragDeltaEventArgs> PreviewDragDelta
+        {
+            add { AddHandler(PreviewDragDeltaEvent, value); }
+            remove { RemoveHandler(PreviewDragDeltaEvent, value); }
+        }
+
+        public event EventHandler<DockDragCompletedEventArgs> DragCompleted
+        {
+            add { AddHandler(DragCompletedEvent, value); }
+            remove { RemoveHandler(DragCompletedEvent, value); }
         }
 
         public int LogicalIndex

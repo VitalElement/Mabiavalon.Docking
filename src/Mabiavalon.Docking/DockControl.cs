@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Mabiavalon.Core;
 using Perspex;
 using Perspex.Controls;
+using Perspex.Controls.Primitives;
+using Perspex.Input;
 using Perspex.Styling;
 
 namespace Mabiavalon
@@ -35,7 +37,30 @@ namespace Mabiavalon
 
         static DockControl()
         {
-            
+            DockItem.DragStartedEvent.AddClassHandler<DockControl>(ItemDragStart);
+            DockItem.DragDeltaEvent.AddClassHandler<DockControl>(ItemDragDelta);
+            DockItem.PreviewDragDeltaEvent.AddClassHandler<DockControl>(ItemPreviewDragDelta);
+            DockItem.DragCompletedEvent.AddClassHandler<DockControl>(ItemDragCompleted);
+        }
+
+        private static Action<DockDragStartedEventArgs> ItemDragStart(DockControl arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static Action<DockDragDeltaEventArgs> ItemDragDelta(DockControl arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static Action<DockDragDeltaEventArgs> ItemPreviewDragDelta(DockControl arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static Action<DockDragCompletedEventArgs> ItemDragCompleted(DockControl arg)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -57,6 +82,12 @@ namespace Mabiavalon
             get { return GetValue(InterTabControllerProperty); }
             set { SetValue(InterTabControllerProperty, value); }
         }
+
+        private bool IsMyItem(DockItem item)
+        {
+            return _dockItemsControl != null && _dockItemsControl.DockItems().Contains(item);
+        }
+
 
         /// <summary>
         /// Helper method to add an item next to an existing item.
