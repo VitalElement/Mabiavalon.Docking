@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Perspex;
+using Perspex.Controls;
 using Perspex.VisualTree;
 
 namespace Mabiavalon.Docking
@@ -61,11 +62,11 @@ namespace Mabiavalon.Docking
             get { return _secondDockControl; }
         }
 
-        private static DockControl FindDockControl(object item, PerspexObject contentPresenter)
+        private static DockControl FindDockControl(object item, Control contentPresenter)
         {
             var result = item as DockControl;
             return result ??
-                   ((IVisual)contentPresenter).GetSelfAndVisualDescendents()
+                   contentPresenter.GetSelfAndVisualDescendents()
                        .OfType<DockControl>()
                        .FirstOrDefault();
         }
