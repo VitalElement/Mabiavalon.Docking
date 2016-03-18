@@ -159,6 +159,7 @@
     <Compile Include="Docking\Branch.cs" />
     <Compile Include="Docking\BranchAccessor.cs" />
     <Compile Include="Docking\BranchItem.cs" />
+    <Compile Include="Docking\BranchResult.cs" />
     <Compile Include="Docking\FloatingItemSnapShot.cs" />
     <Compile Include="DockItem.cs" />
     <Compile Include="DockItemEventArgs.cs" />
