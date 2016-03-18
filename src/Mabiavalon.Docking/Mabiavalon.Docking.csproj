@@ -148,6 +148,7 @@
     <Compile Include="CanvasOrganizer.cs" />
     <Compile Include="Core\CollectionTeaser.cs" />
     <Compile Include="Core\FuncComparer.cs" />
+    <Compile Include="Core\HitTest.cs" />
     <Compile Include="Core\MultiComparer.cs" />
     <Compile Include="Core\SystemCommand.cs" />
     <Compile Include="Core\TabHeaderDragStartInformation.cs" />
