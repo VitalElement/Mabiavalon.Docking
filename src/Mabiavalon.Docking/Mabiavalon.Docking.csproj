@@ -180,6 +180,7 @@
     <Compile Include="StackPositionMonitor.cs" />
     <Compile Include="TabEmptiedResponse.cs" />
     <Compile Include="VerticalOrganizer.cs" />
+    <Compile Include="VerticalPositionMonitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
