@@ -157,6 +157,7 @@
     <Compile Include="DockDragDeltaEventArgs.cs" />
     <Compile Include="DockDragStartedEventArgs.cs" />
     <Compile Include="Docking\Branch.cs" />
+    <Compile Include="Docking\FloatingItemSnapShot.cs" />
     <Compile Include="DockItem.cs" />
     <Compile Include="DockItemEventArgs.cs" />
     <Compile Include="DockItemsControl.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="IItemsOrganizer.cs" />
     <Compile Include="IManualInterTabClient.cs" />
     <Compile Include="INewTabHost.cs" />
+    <Compile Include="InterTabTransfer.cs" />
     <Compile Include="LocationChangedEventArgs.cs" />
     <Compile Include="NewTabHost.cs" />
     <Compile Include="OrderChangedEventArgs.cs" />
