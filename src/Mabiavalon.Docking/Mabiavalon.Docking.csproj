@@ -150,6 +150,7 @@
     <Compile Include="Core\FuncComparer.cs" />
     <Compile Include="Core\MultiComparer.cs" />
     <Compile Include="Core\TabHeaderDragStartInformation.cs" />
+    <Compile Include="Core\WindowMessage.cs" />
     <Compile Include="DefaultInterLayoutClient.cs" />
     <Compile Include="DefaultInterTabClient.cs" />
     <Compile Include="DockControl.cs" />
