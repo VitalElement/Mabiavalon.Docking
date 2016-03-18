@@ -150,6 +150,7 @@
     <Compile Include="Core\FuncComparer.cs" />
     <Compile Include="Core\HitTest.cs" />
     <Compile Include="Core\MultiComparer.cs" />
+    <Compile Include="Core\Native.cs" />
     <Compile Include="Core\SystemCommand.cs" />
     <Compile Include="Core\TabHeaderDragStartInformation.cs" />
     <Compile Include="Core\WindowMessage.cs" />
