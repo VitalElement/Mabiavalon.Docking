@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Perspex.Input;
+﻿using Perspex.Input;
 using Perspex.Interactivity;
+using System;
 
 namespace Mabiavalon
 {
@@ -18,8 +14,8 @@ namespace Mabiavalon
 
         public DockDragCompletedEventArgs(DockItem dockItem, VectorEventArgs dragCompletedEventArgs)
         {
-            if (dockItem == null) throw new ArgumentNullException("dockItem");
-            if (dragCompletedEventArgs == null) throw new ArgumentNullException("dragCompletedEventArgs");
+            if (dockItem == null) throw new ArgumentNullException(nameof(dockItem));
+            if (dragCompletedEventArgs == null) throw new ArgumentNullException(nameof(dragCompletedEventArgs));
 
             _dockItem = dockItem;
             _dragCompletedEventArgs = dragCompletedEventArgs;
@@ -29,8 +25,8 @@ namespace Mabiavalon
             VectorEventArgs dragCompletedEventArgs)
             : base(routedEvent)
         {
-            if (dockItem == null) throw new ArgumentNullException("dockItem");
-            if (dragCompletedEventArgs == null) throw new ArgumentNullException("dragCompletedEventArgs");
+            if (dockItem == null) throw new ArgumentNullException(nameof(dockItem));
+            if (dragCompletedEventArgs == null) throw new ArgumentNullException(nameof(dragCompletedEventArgs));
 
             _dockItem = dockItem;
             _dragCompletedEventArgs = dragCompletedEventArgs;
@@ -40,8 +36,8 @@ namespace Mabiavalon
             VectorEventArgs dragCompletedEventArgs)
             : base(routedEvent, source)
         {
-            if (dockItem == null) throw new ArgumentNullException("dockItem");
-            if (dragCompletedEventArgs == null) throw new ArgumentNullException("dragCompletedEventArgs");
+            if (dockItem == null) throw new ArgumentNullException(nameof(dockItem));
+            if (dragCompletedEventArgs == null) throw new ArgumentNullException(nameof(dragCompletedEventArgs));
 
             _dockItem = dockItem;
             _dragCompletedEventArgs = dragCompletedEventArgs;

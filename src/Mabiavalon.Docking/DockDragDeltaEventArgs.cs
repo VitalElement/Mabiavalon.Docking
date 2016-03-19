@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Perspex.Input;
+﻿using Perspex.Input;
 using Perspex.Interactivity;
+using System;
 
 namespace Mabiavalon
 {
@@ -17,7 +13,7 @@ namespace Mabiavalon
         public DockDragDeltaEventArgs(DockItem dockItem, VectorEventArgs dragDeltaEventArgs)
             : base(dockItem)
         {
-            if (dragDeltaEventArgs == null) throw new ArgumentNullException("dragDeltaEventArgs");
+            if (dragDeltaEventArgs == null) throw new ArgumentNullException(nameof(dragDeltaEventArgs));
 
             _dragDeltaEventArgs = dragDeltaEventArgs;
         }
@@ -25,7 +21,7 @@ namespace Mabiavalon
         public DockDragDeltaEventArgs(RoutedEvent routedEvent, DockItem dockItem, VectorEventArgs dragDeltaEventArgs)
             : base(routedEvent, dockItem)
         {
-            if (dragDeltaEventArgs == null) throw new ArgumentNullException("dragDeltaEventArgs");
+            if (dragDeltaEventArgs == null) throw new ArgumentNullException(nameof(dragDeltaEventArgs));
 
             _dragDeltaEventArgs = dragDeltaEventArgs;
         }
@@ -34,7 +30,7 @@ namespace Mabiavalon
             VectorEventArgs dragDeltaEventArgs)
             : base(routedEvent, source, dockItem)
         {
-            if (dragDeltaEventArgs == null) throw new ArgumentNullException("dragDeltaEventArgs");
+            if (dragDeltaEventArgs == null) throw new ArgumentNullException(nameof(dragDeltaEventArgs));
 
             _dragDeltaEventArgs = dragDeltaEventArgs;
         }

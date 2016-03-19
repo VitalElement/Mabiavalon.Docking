@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mabiavalon.Docking
 {
@@ -37,7 +33,7 @@ namespace Mabiavalon.Docking
 
         public void MarkFound(Branch branch, bool isSecondLeaf)
         {
-            if (branch == null) throw new ArgumentNullException("branch");
+            if (branch == null) throw new ArgumentNullException(nameof(branch));
             if (IsFound)
                 throw new InvalidOperationException("Already found.");
 

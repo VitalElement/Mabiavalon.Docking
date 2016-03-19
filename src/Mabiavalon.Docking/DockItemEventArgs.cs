@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Perspex.Interactivity;
+﻿using Perspex.Interactivity;
+using System;
 
 namespace Mabiavalon
 {
@@ -15,7 +11,7 @@ namespace Mabiavalon
 
         public DockItemEventArgs(DockItem dockItem)
         {
-            if (dockItem == null) throw new ArgumentNullException("dockItem");
+            if (dockItem == null) throw new ArgumentNullException(nameof(dockItem));
 
             _dockItem = dockItem;
         }

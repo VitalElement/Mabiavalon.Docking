@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mabiavalon.Docking
 {
@@ -20,8 +16,8 @@ namespace Mabiavalon.Docking
 
         internal LocationReport(DockControl dockControl, Layout rootLayout, Branch parentBranch, bool isSecondLeaf)
         {
-            if (dockControl == null) throw new ArgumentNullException("dockControl");
-            if (rootLayout == null) throw new ArgumentNullException("rootLayout");
+            if (dockControl == null) throw new ArgumentNullException(nameof(dockControl));
+            if (rootLayout == null) throw new ArgumentNullException(nameof(rootLayout));
 
             _dockControl = dockControl;
             _rootLayout = rootLayout;

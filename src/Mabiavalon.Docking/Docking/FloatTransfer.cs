@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mabiavalon.Docking
 {
@@ -14,7 +10,7 @@ namespace Mabiavalon.Docking
 
         public FloatTransfer(double width, double height, object content)
         {
-            if (content == null) throw new ArgumentNullException("content");
+            if (content == null) throw new ArgumentNullException(nameof(content));
 
             _width = width;
             _height = height;
@@ -23,7 +19,7 @@ namespace Mabiavalon.Docking
 
         public static FloatTransfer TakeSnapshot(DockItem dockItem, DockControl sourceDockControl)
         {
-            if (dockItem == null) throw new ArgumentNullException("dockItem");
+            if (dockItem == null) throw new ArgumentNullException(nameof(dockItem));
 
             return new FloatTransfer(sourceDockControl.Width, sourceDockControl.Height, dockItem.UnderlyingContent ?? dockItem.Content ?? dockItem);
         }

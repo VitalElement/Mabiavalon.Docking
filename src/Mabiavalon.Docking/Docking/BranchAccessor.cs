@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Perspex;
-using Perspex.Controls;
+﻿using Perspex.Controls;
 using Perspex.VisualTree;
+using System;
+using System.Linq;
 
 namespace Mabiavalon.Docking
 {
@@ -19,7 +15,7 @@ namespace Mabiavalon.Docking
 
         public BranchAccessor(Branch branch)
         {
-            if (branch == null) throw new ArgumentNullException("branch");
+            if (branch == null) throw new ArgumentNullException(nameof(branch));
 
             _branch = branch;
 
@@ -91,7 +87,7 @@ namespace Mabiavalon.Docking
                     contentGetter = () => _branch.SecondItem;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("childItem");
+                    throw new ArgumentOutOfRangeException(nameof(childItem));
             }
 
             var branchDescription = branchGetter();

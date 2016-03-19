@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mabiavalon.Docking
 {
@@ -15,7 +11,7 @@ namespace Mabiavalon.Docking
         /// <returns></returns>
         public static LayoutAccessor Query(this Layout layout)
         {
-            if (layout == null) throw new ArgumentNullException("layout");
+            if (layout == null) throw new ArgumentNullException(nameof(layout));
 
             return new LayoutAccessor(layout);
         }
@@ -37,7 +33,7 @@ namespace Mabiavalon.Docking
             Action<TContext, DockControl> dockControlVisitor = null,
             Action<TContext, object> contentVisitor = null)
         {
-            if (layoutAccessor == null) throw new ArgumentNullException("layoutAccessor");
+            if (layoutAccessor == null) throw new ArgumentNullException(nameof(layoutAccessor));
 
             layoutAccessor.Visit(
                 WrapVisitor(context, branchVisitor),
@@ -67,7 +63,7 @@ namespace Mabiavalon.Docking
             Action<TContext, DockControl> dockControlVisitor = null,
             Action<TContext, object> contentVisitor = null)
         {
-            if (branchAccessor == null) throw new ArgumentNullException("branchAccessor");
+            if (branchAccessor == null) throw new ArgumentNullException(nameof(branchAccessor));
 
             branchAccessor.Visit(
                 childItem,

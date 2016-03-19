@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Perspex;
+﻿using Perspex;
+using System;
 
 namespace Mabiavalon
 {
@@ -14,7 +10,7 @@ namespace Mabiavalon
 
         public LocationChangedEventArgs(object item, Point location)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
             _item = item;
             _location = location;

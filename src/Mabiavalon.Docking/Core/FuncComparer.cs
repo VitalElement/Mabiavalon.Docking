@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mabiavalon.Core
 {
@@ -12,7 +9,7 @@ namespace Mabiavalon.Core
 
         public FuncComparer(Func<TObject, TObject, int> comparer)
         {
-            if (comparer == null) throw new ArgumentNullException("comparer");
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
 
             _comparer = comparer;
         }

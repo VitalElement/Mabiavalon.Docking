@@ -435,7 +435,7 @@ namespace Mabiavalon.Docking
         /// <returns></returns>
         public static LocationReport Find(DockControl dockControl)
         {
-            if (dockControl == null) throw new ArgumentNullException("dockControl");
+            if (dockControl == null) throw new ArgumentNullException(nameof(dockControl));
 
             return Finder.Find(dockControl);
         }
@@ -466,7 +466,7 @@ namespace Mabiavalon.Docking
             double firstItemProportion)
         {
             if (firstItemProportion < 0.0 || firstItemProportion > 1.0)
-                throw new ArgumentOutOfRangeException("firstItemProportion", "Must be >= 0.0 and <= 1.0");
+                throw new ArgumentOutOfRangeException(nameof(firstItemProportion), "Must be >= 0.0 and <= 1.0");
 
             var locationReport = Find(dockControl);
 

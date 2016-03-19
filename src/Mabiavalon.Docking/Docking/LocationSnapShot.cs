@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Perspex.Controls;
+﻿using Perspex.Controls;
 using Perspex.Layout;
+using System;
 
 namespace Mabiavalon.Docking
 {
@@ -21,7 +17,7 @@ namespace Mabiavalon.Docking
 
         public static LocationSnapShot Take(Control control)
         {
-            if (control == null) throw new ArgumentNullException("control");
+            if (control == null) throw new ArgumentNullException(nameof(control));
 
             return new LocationSnapShot(control.Width, control.Height);
         }
@@ -34,7 +30,7 @@ namespace Mabiavalon.Docking
 
         public void Apply(Control control)
         {
-            if (control == null) throw new ArgumentNullException("control");
+            if (control == null) throw new ArgumentNullException(nameof(control));
 
             control.SetValue(Layoutable.WidthProperty, _width);
             control.SetValue(Layoutable.HeightProperty, _height);

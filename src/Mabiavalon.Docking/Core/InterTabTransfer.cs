@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Mabiavalon.Docking;
+﻿using Mabiavalon.Docking;
 using Perspex;
 using Perspex.Controls;
+using System;
+using System.Collections.Generic;
 
 namespace Mabiavalon.Core
 {
@@ -27,9 +27,9 @@ namespace Mabiavalon.Core
 
         public InterTabTransfer(object item, DockItem originatorContainer, Orientation breachOrientation, Point dragStartWindowOffset, Point dragStartItemOffset, Point itemPositionWithinHeader, Size itemSize, IList<FloatingItemSnapShot> floatingItemSnapShots, bool isTransposing)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            if (originatorContainer == null) throw new ArgumentNullException("originatorContainer");
-            if (floatingItemSnapShots == null) throw new ArgumentNullException("floatingItemSnapShots");
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (originatorContainer == null) throw new ArgumentNullException(nameof(originatorContainer));
+            if (floatingItemSnapShots == null) throw new ArgumentNullException(nameof(floatingItemSnapShots));
 
             _transferReason = InterTabTransferReason.Breach;
 
@@ -47,9 +47,9 @@ namespace Mabiavalon.Core
         public InterTabTransfer(object item, DockItem originatorContainer, Point dragStartItemOffset,
             IList<FloatingItemSnapShot> floatingItemSnapShots)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            if (originatorContainer == null) throw new ArgumentNullException("originatorContainer");
-            if (floatingItemSnapShots == null) throw new ArgumentNullException("floatingItemSnapShots");
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (originatorContainer == null) throw new ArgumentNullException(nameof(originatorContainer));
+            if (floatingItemSnapShots == null) throw new ArgumentNullException(nameof(floatingItemSnapShots));
 
             _transferReason = InterTabTransferReason.Reentry;
 

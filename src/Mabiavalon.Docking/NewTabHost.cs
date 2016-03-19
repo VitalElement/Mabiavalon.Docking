@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Perspex.Controls;
+﻿using Perspex.Controls;
+using System;
 
 namespace Mabiavalon
 {
@@ -14,8 +10,8 @@ namespace Mabiavalon
 
         public NewTabHost(TElement container, DockControl dockControl)
         {
-            if (container == null) throw new ArgumentNullException("container");
-            if (dockControl == null) throw new ArgumentNullException("dockControl");
+            if (container == null) throw new ArgumentNullException(nameof(container));
+            if (dockControl == null) throw new ArgumentNullException(nameof(dockControl));
 
             _container = container;
             _dockControl = dockControl;

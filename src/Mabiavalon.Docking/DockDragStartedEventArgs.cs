@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Perspex.Input;
+﻿using Perspex.Input;
 using Perspex.Interactivity;
+using System;
 
 namespace Mabiavalon
 {
@@ -17,7 +13,7 @@ namespace Mabiavalon
         public DockDragStartedEventArgs(DockItem dockItem, VectorEventArgs dragStartedEventArgs)
             : base(dockItem)
         {
-            if (dragStartedEventArgs == null) throw new ArgumentNullException("dragStartedEventArgs");
+            if (dragStartedEventArgs == null) throw new ArgumentNullException(nameof(dragStartedEventArgs));
 
             _dragStartedEventArgs = dragStartedEventArgs;
         }

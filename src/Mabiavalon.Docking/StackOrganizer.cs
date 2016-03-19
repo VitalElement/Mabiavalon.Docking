@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Mabiavalon.Core;
+﻿using Mabiavalon.Core;
 using Perspex;
 using Perspex.Animation;
 using Perspex.Controls;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Mabiavalon
 {
@@ -44,7 +42,7 @@ namespace Mabiavalon
                     _canvasPerspexProperty = Canvas.TopProperty;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("orientation");
+                    throw new ArgumentOutOfRangeException(nameof(orientation));
             }
         }
 
@@ -91,7 +89,7 @@ namespace Mabiavalon
 
         public void Organize(DockItemsControl requestor, Size measureBounds, IEnumerable<DockItem> items)
         {
-            if (items == null) throw new ArgumentNullException("items");
+            if (items == null) throw new ArgumentNullException(nameof(items));
 
             OrganizeInternal(
                 requestor,
@@ -105,7 +103,7 @@ namespace Mabiavalon
 
         public void Organize(DockItemsControl requestor, Size measureBounds, IOrderedEnumerable<DockItem> items)
         {
-            if (items == null) throw new ArgumentNullException("items");
+            if (items == null) throw new ArgumentNullException(nameof(items));
 
             OrganizeInternal(
                 requestor,
@@ -115,21 +113,21 @@ namespace Mabiavalon
 
         public void OrganizeOnMouseDownWithin(DockItemsControl requestor, Size measureBounds, List<DockItem> siblingItems, DockItem dockItem)
         {
-            
+
         }
 
         public void OrganizeOnDragStarted(DockItemsControl requestor, Size measureBounds, IEnumerable<DockItem> siblingItems, DockItem dockItem)
         {
-            if (siblingItems == null) throw new ArgumentNullException("siblingItems");
-            if (dockItem == null) throw new ArgumentNullException("dockItem");
+            if (siblingItems == null) throw new ArgumentNullException(nameof(siblingItems));
+            if (dockItem == null) throw new ArgumentNullException(nameof(dockItem));
 
             _siblingItemLocationOnDragStart = siblingItems.Select(GetLocationInfo).ToDictionary(loc => loc.Item);
         }
 
         public void OrganizeOnDrag(DockItemsControl requestor, Size measureBounds, IEnumerable<DockItem> siblingItems, DockItem dockItem)
         {
-            if (siblingItems == null) throw new ArgumentNullException("siblingItems");
-            if (dockItem == null) throw new ArgumentNullException("dockItem");
+            if (siblingItems == null) throw new ArgumentNullException(nameof(siblingItems));
+            if (dockItem == null) throw new ArgumentNullException(nameof(dockItem));
 
             var currentLocations = siblingItems
                 .Select(GetLocationInfo)
@@ -152,7 +150,7 @@ namespace Mabiavalon
 
         public void OrganizeOnDragCompleted(DockItemsControl requestor, Size measureBounds, IEnumerable<DockItem> siblingItems, DockItem dockItem)
         {
-            if (siblingItems == null) throw new ArgumentNullException("siblingItems");
+            if (siblingItems == null) throw new ArgumentNullException(nameof(siblingItems));
             var currentLocations = siblingItems
                 .Select(GetLocationInfo)
                 .Union(new[] { GetLocationInfo(dockItem) })
@@ -193,7 +191,7 @@ namespace Mabiavalon
 
         public Size Measure(DockItemsControl requestor, Size availableSize, IEnumerable<DockItem> items)
         {
-            if (items == null) throw new ArgumentNullException("items");
+            if (items == null) throw new ArgumentNullException(nameof(items));
 
             var size = new Size(double.PositiveInfinity, double.PositiveInfinity);
 
@@ -225,7 +223,7 @@ namespace Mabiavalon
 
         public IEnumerable<DockItem> Sort(IEnumerable<DockItem> items)
         {
-            if (items == null) throw new ArgumentNullException("items");
+            if (items == null) throw new ArgumentNullException(nameof(items));
 
             return items.OrderBy(i => GetLocationInfo(i).Start);
         }
@@ -268,7 +266,7 @@ namespace Mabiavalon
                 _activeAnimationTargetLocations.Remove(dockItem);
             });
 
-            
+
         }
 
         private void SetLocation(DockItem dockItem, double location)

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mabiavalon.Docking
 {
@@ -10,7 +6,7 @@ namespace Mabiavalon.Docking
     {
         internal static LocationReport Find(DockControl dockControl)
         {
-            if (dockControl == null) throw new ArgumentNullException("dockControl");
+            if (dockControl == null) throw new ArgumentNullException(nameof(dockControl));
 
             var locationReportBuilder = new LocationReportBuilder(dockControl);
 

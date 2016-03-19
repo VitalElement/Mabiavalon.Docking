@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Perspex;
+﻿using Perspex;
 using Perspex.Controls;
 using Perspex.Layout;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Mabiavalon.Docking
 {
@@ -13,7 +11,7 @@ namespace Mabiavalon.Docking
     {
         public static void Tile(IEnumerable<DockItem> dockItems, Size bounds)
         {
-            if (dockItems == null) throw new ArgumentNullException("dockItems");
+            if (dockItems == null) throw new ArgumentNullException(nameof(dockItems));
 
             var items = new Queue<DockItem>(dockItems.OrderBy(di => di.GetValue(Visual.ZIndexProperty)));
 
@@ -42,7 +40,7 @@ namespace Mabiavalon.Docking
 
         public static void TileHorizontally(IEnumerable<DockItem> dockItems, Size bounds)
         {
-            if (dockItems == null) throw new ArgumentNullException("dockItems");
+            if (dockItems == null) throw new ArgumentNullException(nameof(dockItems));
 
             var items = dockItems.ToList();
 
@@ -61,7 +59,7 @@ namespace Mabiavalon.Docking
 
         public static void TileVertically(IEnumerable<DockItem> dockItems, Size bounds)
         {
-            if (dockItems == null) throw new ArgumentNullException("dockItems");
+            if (dockItems == null) throw new ArgumentNullException(nameof(dockItems));
 
             var items = dockItems.ToList();
 

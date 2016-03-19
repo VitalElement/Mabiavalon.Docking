@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mabiavalon.Docking
 {
@@ -13,8 +9,8 @@ namespace Mabiavalon.Docking
 
         public BranchResult(Branch branch, DockControl dockControl)
         {
-            if (branch == null) throw new ArgumentNullException("branch");
-            if (dockControl == null) throw new ArgumentNullException("dockControl");
+            if (branch == null) throw new ArgumentNullException(nameof(branch));
+            if (dockControl == null) throw new ArgumentNullException(nameof(dockControl));
 
             _branch = branch;
             _dockControl = dockControl;

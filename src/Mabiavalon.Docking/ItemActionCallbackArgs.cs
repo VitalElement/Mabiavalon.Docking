@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Perspex.Controls;
+﻿using Perspex.Controls;
+using System;
 
 namespace Mabiavalon
 {
@@ -17,9 +13,9 @@ namespace Mabiavalon
 
         public ItemActionCallbackArgs(Window window, TOwner owner, DockItem dockItem)
         {
-            if (window == null) throw new ArgumentNullException("window");
-            if (owner == null) throw new ArgumentNullException("owner");
-            if (dockItem == null) throw new ArgumentNullException("dockItem");
+            if (window == null) throw new ArgumentNullException(nameof(window));
+            if (owner == null) throw new ArgumentNullException(nameof(owner));
+            if (dockItem == null) throw new ArgumentNullException(nameof(dockItem));
 
             _window = window;
             _owner = owner;

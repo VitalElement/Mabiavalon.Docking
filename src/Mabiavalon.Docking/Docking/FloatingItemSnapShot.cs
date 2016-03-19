@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Perspex;
+﻿using Perspex;
 using Perspex.Controls;
 using Perspex.Layout;
+using System;
 
 namespace Mabiavalon.Docking
 {
@@ -21,7 +17,7 @@ namespace Mabiavalon.Docking
 
         public FloatingItemSnapShot(object content, Rect location, int zIndex, WindowState state)
         {
-            if (content == null) throw new ArgumentNullException("content");
+            if (content == null) throw new ArgumentNullException(nameof(content));
 
             _content = content;
             _location = location;
@@ -31,7 +27,7 @@ namespace Mabiavalon.Docking
 
         public static FloatingItemSnapShot Take(DockItem dockItem)
         {
-            if (dockItem == null) throw new ArgumentNullException("dockItem");
+            if (dockItem == null) throw new ArgumentNullException(nameof(dockItem));
 
             return new FloatingItemSnapShot(
                 dockItem.Content,
@@ -42,7 +38,7 @@ namespace Mabiavalon.Docking
 
         public void Apply(DockItem dockItem)
         {
-            if (dockItem == null) throw new ArgumentNullException("dockItem");
+            if (dockItem == null) throw new ArgumentNullException(nameof(dockItem));
 
             dockItem.SetValue(DockItem.XProperty, Location.X);
             dockItem.SetValue(DockItem.YProperty, Location.Y);

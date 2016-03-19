@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mabiavalon
 {
@@ -22,7 +18,7 @@ namespace Mabiavalon
 
         internal virtual void OnLocationChanged(LocationChangedEventArgs e)
         {
-            if (e == null) throw new ArgumentNullException("e");
+            if (e == null) throw new ArgumentNullException(nameof(e));
 
             var handler = LocationChanged;
             handler?.Invoke(this, e);

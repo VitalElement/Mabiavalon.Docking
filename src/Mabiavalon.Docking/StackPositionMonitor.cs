@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Perspex.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Perspex.Controls;
 
 namespace Mabiavalon
 {
@@ -26,7 +24,7 @@ namespace Mabiavalon
                     _getLocation = item => item.Y;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("orientation");
+                    throw new ArgumentOutOfRangeException(nameof(orientation));
             }
         }
 
@@ -40,7 +38,7 @@ namespace Mabiavalon
 
         internal IEnumerable<DockItem> Sort(IEnumerable<DockItem> items)
         {
-            if (items == null) throw new ArgumentNullException("items");
+            if (items == null) throw new ArgumentNullException(nameof(items));
 
             return items.OrderBy(i => _getLocation(i));
         }

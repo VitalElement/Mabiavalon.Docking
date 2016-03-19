@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Perspex.Controls;
+﻿using Perspex.Controls;
 using Perspex.LogicalTree;
 using Perspex.Threading;
 using Perspex.VisualTree;
+using System;
+using System.Linq;
 
 namespace Mabiavalon
 {
@@ -14,7 +11,7 @@ namespace Mabiavalon
     {
         public virtual INewTabHost<Window> GetNewHost(IInterTabClient interTabClient, object partition, DockControl source)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             var sourceWindow = source.GetSelfAndVisualAncestors().OfType<Window>().First();
             if (sourceWindow == null) throw new ApplicationException("Unable to ascrtain source window.");
 

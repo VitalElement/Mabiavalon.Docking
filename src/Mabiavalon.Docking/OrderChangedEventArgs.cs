@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mabiavalon
 {
@@ -13,7 +9,7 @@ namespace Mabiavalon
 
         public OrderChangedEventArgs(object[] previousOrder, object[] newOrder)
         {
-            if (newOrder == null) throw new ArgumentNullException("newOrder");
+            if (newOrder == null) throw new ArgumentNullException(nameof(newOrder));
 
             _previousOrder = previousOrder;
             _newOrder = newOrder;

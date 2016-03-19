@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mabiavalon.Core
 {
@@ -21,7 +19,7 @@ namespace Mabiavalon.Core
         public static MultiComparer<TObject> Ascending<TAttribute>(Func<TObject, TAttribute> accessor)
             where TAttribute : IComparable
         {
-            if (accessor == null) throw new ArgumentNullException("accessor");
+            if (accessor == null) throw new ArgumentNullException(nameof(accessor));
 
             return new MultiComparer<TObject>(BuildAscendingComparer(accessor));
         }
@@ -29,7 +27,7 @@ namespace Mabiavalon.Core
         public static MultiComparer<TObject> Descending<TAttribute>(Func<TObject, TAttribute> accessor)
             where TAttribute : IComparable
         {
-            if (accessor == null) throw new ArgumentNullException("accessor");
+            if (accessor == null) throw new ArgumentNullException(nameof(accessor));
 
             return new MultiComparer<TObject>(BuildDescendingComparer(accessor));
         }
@@ -37,7 +35,7 @@ namespace Mabiavalon.Core
         public MultiComparer<TObject> ThenAscending<TAttribute>(Func<TObject, TAttribute> accessor)
             where TAttribute : IComparable
         {
-            if (accessor == null) throw new ArgumentNullException("accessor");
+            if (accessor == null) throw new ArgumentNullException(nameof(accessor));
 
             _attributeComparers.Add(BuildAscendingComparer(accessor));
 
@@ -47,7 +45,7 @@ namespace Mabiavalon.Core
         public MultiComparer<TObject> ThenDescending<TAttribute>(Func<TObject, TAttribute> accessor)
             where TAttribute : IComparable
         {
-            if (accessor == null) throw new ArgumentNullException("accessor");
+            if (accessor == null) throw new ArgumentNullException(nameof(accessor));
 
             _attributeComparers.Add(BuildDescendingComparer(accessor));
 
