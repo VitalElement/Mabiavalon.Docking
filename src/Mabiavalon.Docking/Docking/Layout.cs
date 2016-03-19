@@ -5,6 +5,7 @@ using Perspex.Controls.Presenters;
 using Perspex.Controls.Primitives;
 using Perspex.Input;
 using Perspex.LogicalTree;
+using Perspex.Markup.Xaml.Data;
 using Perspex.Markup.Xaml.Templates;
 using Perspex.Styling;
 using Perspex.Threading;
@@ -108,52 +109,6 @@ namespace Mabiavalon.Docking
             DockItem.DragCompletedEvent.AddClassHandler<Layout>(x => x.ItemDragCompleted);
         }
 
-        private void ItemDragStarted(DockDragStartedEventArgs e)
-        {
-            //we wait until drag is in full flow so we know the partition has been setup by the owning tab control
-            _isDragOpWireUpPending = true;
-        }
-
-        private void ItemPreviewDragDelta(DockDragDeltaEventArgs e)
-        {
-            if (e.Cancel) return;
-
-            if (_isDragOpWireUpPending)
-            {
-                SetupParticipatingLayouts(e.DockItem);
-                _isDragOpWireUpPending = false;
-            }
-
-            foreach (var layout in LoadedLayouts.Where(l => l.IsParticipatingInDrag))
-            {
-                var cursorPos = MouseDevice.Instance.Position;
-                layout.MonitorDropZones(cursorPos);
-            }
-        }
-
-        private void ItemDragCompleted(DockDragCompletedEventArgs e)
-        {
-            _isDragOpWireUpPending = false;
-
-            foreach (var loadedLayout in LoadedLayouts)
-                loadedLayout.IsParticipatingInDrag = false;
-
-            if (_currentlyOfferedDropZone == null || e.DockItem.IsDropTargetFound) return;
-
-            DockControl dockControl;
-            if (TryGetSourceTabControl(e.DockItem, out dockControl))
-            {
-                if (((ICollection)dockControl.Items).Count > 1) return;
-
-                if (_currentlyOfferedDropZone.Item2.Location == DropZoneLocation.Floating)
-                    Float(_currentlyOfferedDropZone.Item1, e.DockItem);
-                else
-                    _currentlyOfferedDropZone.Item1.Branch(_currentlyOfferedDropZone.Item2.Location, e.DockItem);
-            }
-
-            _currentlyOfferedDropZone = null;
-        }
-
         public Layout()
         {
 
@@ -180,11 +135,16 @@ namespace Mabiavalon.Docking
             TileFloatingItemsHorizontallyCommand.Subscribe(TileFloatingItemsHorizonallyExecuted);
             TileFloatingItemsVerticallyCommand.Subscribe(TileFloatingItemsVerticallyExecuted);
 
-            // quick hack 
+            // TODO: Quick hack 
             _floatingItems = new DockItemsControl
             {
-
+                ContainerCustomisations = new ContainerCustomizations(
+                    GetFloatingContainerForItemOverride,
+                    PerpareFloatingContainerForItemOverride,
+                    ClearingFloatingContainerForItemOverride)
             };
+
+            // TODO: Binding of some of the properties.
         }
 
         public IInterLayoutClient InterLayoutClient
@@ -440,8 +400,8 @@ namespace Mabiavalon.Docking
             foreach (var dropZone in _dropZones.Values.Where(dz => dz != null))
             {
                 var pointFromScreen = window.PointToClient(cursorPos);
-                //var pointRelativeToDropZone = pointFromScreen;
-                var inputHitTest = dropZone.InputHitTest(pointFromScreen);
+                var pointRelativeToDropZone = pointFromScreen * window.TransformToVisual(window);
+                var inputHitTest = dropZone.InputHitTest(pointRelativeToDropZone ?? pointFromScreen);
 
                 if (inputHitTest != null)
                 {
@@ -673,6 +633,100 @@ namespace Mabiavalon.Docking
             } while (control != null);
 
             return null;
+        }
+
+        private void ItemDragStarted(DockDragStartedEventArgs e)
+        {
+            //we wait until drag is in full flow so we know the partition has been setup by the owning tab control
+            _isDragOpWireUpPending = true;
+        }
+
+        private void ItemPreviewDragDelta(DockDragDeltaEventArgs e)
+        {
+            if (e.Cancel) return;
+
+            if (_isDragOpWireUpPending)
+            {
+                SetupParticipatingLayouts(e.DockItem);
+                _isDragOpWireUpPending = false;
+            }
+
+            foreach (var layout in LoadedLayouts.Where(l => l.IsParticipatingInDrag))
+            {
+                var cursorPos = MouseDevice.Instance.Position;
+                layout.MonitorDropZones(cursorPos);
+            }
+        }
+
+        private void ItemDragCompleted(DockDragCompletedEventArgs e)
+        {
+            _isDragOpWireUpPending = false;
+
+            foreach (var loadedLayout in LoadedLayouts)
+                loadedLayout.IsParticipatingInDrag = false;
+
+            if (_currentlyOfferedDropZone == null || e.DockItem.IsDropTargetFound) return;
+
+            DockControl dockControl;
+            if (TryGetSourceTabControl(e.DockItem, out dockControl))
+            {
+                if (((ICollection)dockControl.Items).Count > 1) return;
+
+                if (_currentlyOfferedDropZone.Item2.Location == DropZoneLocation.Floating)
+                    Float(_currentlyOfferedDropZone.Item1, e.DockItem);
+                else
+                    _currentlyOfferedDropZone.Item1.Branch(_currentlyOfferedDropZone.Item2.Location, e.DockItem);
+            }
+
+            _currentlyOfferedDropZone = null;
+        }
+
+        private void PerpareFloatingContainerForItemOverride(Control control, object o)
+        {
+            var headeredDockItem = control as HeaderedDockItem;
+            if (headeredDockItem == null) return;
+
+            SetIsFloatingInLayout(control, true);
+
+            var headBinding = new Binding { Path = FloatingItemHeaderMemberPath, Source = o };
+            headeredDockItem.Bind(HeaderedDockItem.HeaderContentProperty, headBinding);
+
+            if (!string.IsNullOrWhiteSpace(FloatingItemDisplayMemberPath))
+            {
+                var contentBinding = new Binding { Path = FloatingItemDisplayMemberPath, Source = o };
+                headeredDockItem.Bind(ContentControl.ContentProperty, contentBinding);
+            }
+
+            if (_floatTransfer == null || (o != _floatTransfer.Content && control != _floatTransfer.Content))
+                return;
+
+            var dockItem = (DockItem)control;
+
+            Dispatcher.UIThread.InvokeAsync(new Action(() =>
+            {
+                dockItem.Measure(new Size(_floatingItems.Width, _floatingItems.Height));
+                var newWidth = Math.Min(_floatingItems.Width * .75, dockItem.DesiredSize.Width);
+                var newHeight = Math.Min(_floatingItems.Height * .75, dockItem.DesiredSize.Height);
+                dockItem.SetValue(DockItem.XProperty, _floatingItems.Width / 2 - newWidth / 2);
+                dockItem.SetValue(DockItem.YProperty, _floatingItems.Height / 2 - newHeight / 2);
+                dockItem.SetValue(WidthProperty, newWidth);
+                dockItem.SetValue(HeightProperty, newHeight);
+            }), DispatcherPriority.Loaded);
+
+            _floatTransfer = null;
+        }
+
+        private DockItem GetFloatingContainerForItemOverride()
+        {
+            if (string.IsNullOrWhiteSpace(FloatingItemHeaderMemberPath))
+                return new DockItem();
+
+            return new HeaderedDockItem();
+        }
+
+        private static void ClearingFloatingContainerForItemOverride(Control control, object o)
+        {
+            SetIsFloatingInLayout(control, false);
         }
 
         private static void MaximizeFloatingItemExecuted(object _)

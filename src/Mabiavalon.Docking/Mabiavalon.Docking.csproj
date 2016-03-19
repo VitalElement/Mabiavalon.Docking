@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CanvasOrganizer.cs" />
+    <Compile Include="ContainerCustomizations.cs" />
     <Compile Include="Core\CollectionTeaser.cs" />
     <Compile Include="Core\FuncComparer.cs" />
     <Compile Include="Core\HitTest.cs" />

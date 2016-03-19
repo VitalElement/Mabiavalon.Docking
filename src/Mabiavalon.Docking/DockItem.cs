@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Disposables;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Perspex;
+﻿using Perspex;
 using Perspex.Controls;
 using Perspex.Controls.Primitives;
 using Perspex.Input;
-using Perspex.Input.Raw;
 using Perspex.Interactivity;
 using Perspex.Threading;
 using Perspex.VisualTree;
+using System;
+using System.Linq;
+using System.Reactive.Disposables;
 
 namespace Mabiavalon
 {
@@ -83,8 +77,8 @@ namespace Mabiavalon
         public static readonly RoutedEvent<RoutedEventArgs> ClickEvent =
             RoutedEvent.Register<DockItem, RoutedEventArgs>("Click", RoutingStrategies.Bubble);
 
-        public static readonly RoutedEvent<RoutedEventArgs> MouseDownWithinEvent =
-            RoutedEvent.Register<DockItem, RoutedEventArgs>("MouseDownWithin", RoutingStrategies.Bubble);
+        public static readonly RoutedEvent<DockItemEventArgs> MouseDownWithinEvent =
+            RoutedEvent.Register<DockItem, DockItemEventArgs>("MouseDownWithin", RoutingStrategies.Bubble);
 
         public static readonly RoutedEvent<RoutedEventArgs> XChangedEvent =
             RoutedEvent.Register<DockItem, RoutedEventArgs>("XChanged", RoutingStrategies.Bubble);
@@ -122,15 +116,15 @@ namespace Mabiavalon
             SizeGripProperty.Changed.AddClassHandler<DockItem>(x => x.OnSizeGripChanged);
             IsDraggingProperty.Changed.AddClassHandler<DockItem>(x => x.OnIsDraggingChanged);
             IsSiblingDraggingProperty.Changed.AddClassHandler<DockItem>(x => x.OnIsSiblingDraggingChanged);
-            
+
         }
 
-        
+
 
         public DockItem()
         {
             ClickEvent.AddClassHandler<DockItem>(x => x.OnMouseDownWithin(this), handledEventsToo: true);
-            
+
         }
 
         public event EventHandler<RoutedEventArgs> Click
@@ -139,7 +133,7 @@ namespace Mabiavalon
             remove { RemoveHandler(ClickEvent, value); }
         }
 
-        public event EventHandler<RoutedEventArgs> MouseDownWithin
+        public event EventHandler<DockItemEventArgs> MouseDownWithin
         {
             add { AddHandler(MouseDownWithinEvent, value); }
             remove { RemoveHandler(MouseDownWithinEvent, value); }
@@ -326,7 +320,7 @@ namespace Mabiavalon
 
         private void ThumbOnDragDelta(object sender, VectorEventArgs e)
         {
-            var thumb = (Thumb) sender;
+            var thumb = (Thumb)sender;
 
             //var previewEventArgs = new DcokDragDeltaEventArgs(PreviewDragDelta, this, dragDeltaEventArgs);
             //OnPreviewDragDelta(previewEventArgs);
@@ -417,7 +411,7 @@ namespace Mabiavalon
 
         private void SizeThumbOnDragDelta(object sender, VectorEventArgs e)
         {
-            var thumb = (Thumb) sender;
+            var thumb = (Thumb)sender;
             var dockItem = thumb.GetVisualAncestors().OfType<DockItem>().FirstOrDefault();
             if (dockItem == null) return;
 
