@@ -18,9 +18,7 @@ namespace Mabiavalon.Docking.TestApplication
 
         static void Main(string[] args)
         {
-            var app = new App();
-
-            var dockControl = new DockControl();
+            var app = new App();            
             var window = new MainWindow();
             window.Show();
             app.Run(window);
