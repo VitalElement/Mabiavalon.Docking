@@ -64,7 +64,7 @@ namespace Mabiavalon
             PerspexProperty.Register<DockControl, double>("AdjacentHeaderOffset");
 
         public static readonly StyledProperty<IItemsOrganizer> HeaderItemsOrganizerProperty =
-            PerspexProperty.Register<DockControl, IItemsOrganizer>("HeaderItemsOrganizer", defaultValue: new HorizontalOrganizer());
+            PerspexProperty.Register<DockControl, IItemsOrganizer>("HeaderItemsOrganizer", new HorizontalOrganizer());
 
         public static readonly StyledProperty<EmptyHeaderSizingHint> EmptyHeaderSizingHintProperty =
             PerspexProperty.Register<DockControl, EmptyHeaderSizingHint>("EmptyHeaderSizingHint");
@@ -479,7 +479,7 @@ namespace Mabiavalon
             MonitorBreach(e);
         }
 
-        private void MonitorBreach(DockDragDeltaEventArgs dockDragDeltaEventArgs)
+        private void MonitorBreach(DockDragDeltaEventArgs e)
         {
             var mousePositionOnHeaderItemsControl = MouseDevice.Instance.Position *
                                                     this.TransformToVisual(_dockItemsControl);
@@ -502,7 +502,43 @@ namespace Mabiavalon
             if (newTabHost?.DockControl == null || newTabHost.Container == null)
                 throw new ApplicationException("New tab host was not correctly provided");
 
-            // var item = _dockItemsControl.GetVisualChildren().OfType<ItemsControl>().Where(x => x.ItemContainerGenerator.IndexFromContainer());
+            var itemIndex = _dockItemsControl.ItemContainerGenerator.IndexFromContainer(e.DockItem);
+            var item = (Items as IList)[itemIndex];
+
+            var isTransposing = IsTransposing(newTabHost.DockControl);
+
+            var window = this.GetVisualAncestors().OfType<Window>().FirstOrDefault();
+            if (window == null) throw new ApplicationException("Unable to find owning window.");
+            var dragStartWindowOffset = ConfigureNewHostSizeAndGetDragStartWindowOffset(window, newTabHost, e.DockItem, isTransposing);
+
+
+        }
+
+        private object ConfigureNewHostSizeAndGetDragStartWindowOffset(Window currentWindow, INewTabHost<Window> newTabHost, DockItem dockItem, object isTransposing)
+        {
+            var layout = this.GetVisualAncestors().OfType<Layout>().FirstOrDefault();
+            Point dragStartWindowOffset;
+            if (layout != null)
+            {
+                newTabHost.Container.Width = Width + Math.Max(0, currentWindow.Bounds.Width - layout.Width);
+                newTabHost.Container.Height = Height + Math.Max(0, currentWindow.Bounds.Height - layout.Height);
+                var point = new Point() * dockItem.TransformToVisual(dockItem);
+                if (point != null)
+                    dragStartWindowOffset = point.Value;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private object IsTransposing(DockControl dockControl)
+        {
+            return IsVertical(this) != IsVertical(dockControl);
+        }
+
+        private static bool IsVertical(DockControl dockControl)
+        {
+            return dockControl.TabStripPlacement == Dock.Left
+                   || dockControl.TabStripPlacement == Dock.Right;
         }
 
         private void OnItemPreviewDragDelta(DockDragDeltaEventArgs e)
