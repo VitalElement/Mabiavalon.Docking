@@ -567,7 +567,7 @@ namespace Mabiavalon.Docking
             var sourceOfdockItemsControl =
                 dockItem.GetSelfAndLogicalAncestors().OfType<ItemsControl>().FirstOrDefault() as DockItemsControl;
             if (sourceOfdockItemsControl == null ||
-                (sourceOfdockItemsControl.Items as ICollection).Count != 1) return;
+                (sourceOfdockItemsControl.Items as IList).Count != 1) return;
 
             var draggingWindow = dockItem.GetSelfAndVisualAncestors().OfType<Window>().First();
             if (draggingWindow == null) return;
@@ -670,7 +670,7 @@ namespace Mabiavalon.Docking
             DockControl dockControl;
             if (TryGetSourceTabControl(e.DockItem, out dockControl))
             {
-                if (((ICollection)dockControl.Items).Count > 1) return;
+                if (((IList)dockControl.Items).Count > 1) return;
 
                 if (_currentlyOfferedDropZone.Item2.Location == DropZoneLocation.Floating)
                     Float(_currentlyOfferedDropZone.Item1, e.DockItem);
