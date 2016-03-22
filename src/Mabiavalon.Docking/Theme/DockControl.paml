@@ -1,15 +1,38 @@
-﻿<Styles xmlns="https://github.com/perspex" xmlns:local="clr-namespace:Mabiavalon;assembly=Mabiavalon.Docking">
+﻿<Styles xmlns="https://github.com/perspex" xmlns:local="clr-namespace:Mabiavalon;assembly=Mabiavalon.Docking">  
   <Style Selector="local|DockControl">
-    <Setter Property="Background" Value="#1e1e1e"/>
-    <Setter Property="BorderBrush" Value="#ff707070"/>
-    <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="Padding" Value="0"/>
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Border>
-          <TextBlock Text="This is from DockControl" />
-        </Border>
-      </ControlTemplate>
+    <Setter Property="Padding" Value="2"/>
+    <!--<Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>-->
+    <!--<Setter Property="Background" Value="{StaticResource TabItem.Selected.Background}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource TabItem.Selected.Border}"/>-->
+    <Setter Property="BorderThickness" Value="1"/>
+    <!--<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+    <Setter Property="ItemContainerStyle" Value="{StaticResource StandardDragablzTabItemStyle}"/>-->
+    <Setter Property="Template">      
+        <ControlTemplate>
+          <Grid Name="templateRoot" ClipToBounds="true" ColumnDefinitions="*,0" RowDefinitions="Auto, *">
+            <Border Name="contentPanel" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Column="0" Grid.Row="1"
+                    Margin="0 -1 0 0">
+              <Grid Name="PART_ItemsHolder" />
+            </Border>
+            <Grid Grid.Column="0" Grid.Row="0" Margin="0,2,2,0" Name="HeaderContainerGrid" ColumnDefinitions="Auto, Auto, Auto, *">
+              <Grid.Styles>
+                <!-- <Style TargetType="{x:Type Button}" BasedOn="{StaticResource StandardEmbeddedButtonStyle}"></Style>-->
+              </Grid.Styles>
+              <ContentControl Grid.Column="0" Name="PrefixContentControl"
+                              Content="{TemplateBinding HeaderPrefixContent}">
+
+                <Button Name="DefaultAddButton"
+                        Grid.Column="2"
+                        IsVisible="{TemplateBinding ShowDefaultAddButton}"
+                                    />
+                <ContentControl Grid.Column="3" Name="SuffixContentControl"
+                                Content="{TemplateBinding HeaderSuffixContent}"
+                                HorizontalAlignment="Stretch"/>
+              </ContentControl>
+            </Grid>
+          </Grid>
+        </ControlTemplate>
     </Setter>
   </Style>
 </Styles>

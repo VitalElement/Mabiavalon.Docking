@@ -207,9 +207,6 @@
     <Compile Include="StackOrganizer.cs" />
     <Compile Include="StackPositionMonitor.cs" />
     <Compile Include="TabEmptiedResponse.cs" />
-    <Compile Include="Theme\DockControl.paml.cs">
-      <DependentUpon>DockControl.paml</DependentUpon>
-    </Compile>
     <Compile Include="Theme\DockTheme.paml.cs">
       <DependentUpon>DockTheme.paml</DependentUpon>
     </Compile>
@@ -220,6 +217,7 @@
     <None Include="packages.config" />
     <EmbeddedResource Include="Theme\DockTheme.paml" />
     <EmbeddedResource Include="Theme\DockControl.paml" />
+    <EmbeddedResource Include="Theme\TabControl.paml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
