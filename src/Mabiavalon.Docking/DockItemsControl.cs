@@ -88,7 +88,7 @@ namespace Mabiavalon
             var linearPositionMonitor = PositionMonitor as StackPositionMonitor;
             if (linearPositionMonitor == null) return;
 
-            var sortedItems = linearPositionMonitor.Sort(this.Containers<DragablzItem>()).Select(di => di.Content).ToArray();
+            var sortedItems = linearPositionMonitor.Sort(this.ItemContainerGenerator.Containers.OfType<DockItemsControl>().SelectMany(x => x.DockItems())).Select(di => di.Content).ToArray();
             if (_previousSortQueryResult == null || !_previousSortQueryResult.SequenceEqual(sortedItems))
                 linearPositionMonitor.OnOrderChanged(new OrderChangedEventArgs(_previousSortQueryResult, sortedItems));
 

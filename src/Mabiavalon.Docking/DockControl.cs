@@ -501,7 +501,7 @@ namespace Mabiavalon
             if (newTabHost?.DockControl == null || newTabHost.Container == null)
                 throw new ApplicationException("New tab host was not correctly provided");
 
-            var item = _dockItemsControl.GetVisualChildren().OfType<ItemsControl>().Where(x => x.ItemContainerGenerator.IndexFromContainer())
+            // var item = _dockItemsControl.GetVisualChildren().OfType<ItemsControl>().Where(x => x.ItemContainerGenerator.IndexFromContainer());
         }
 
         private void OnItemPreviewDragDelta(DockDragDeltaEventArgs e)
@@ -594,7 +594,7 @@ namespace Mabiavalon
             var interTabTransfer = new InterTabTransfer(item, e.DockItem, mousePositionOnItem.Value, floatingItemSnapShots);
             e.DockItem.IsDragging = false;
 
-            target.tc.RecieveDrag(interTabTransfer);
+            //target.tc.RecieveDrag(interTabTransfer);
             e.Cancel = true;
 
             return true;
