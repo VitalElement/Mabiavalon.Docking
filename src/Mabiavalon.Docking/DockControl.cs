@@ -3,10 +3,11 @@ using Mabiavalon.Docking;
 using Perspex;
 using Perspex.Controls;
 using Perspex.Controls.Presenters;
-using Perspex.LogicalTree;
+using Perspex.Input;
 using Perspex.Markup.Xaml.Templates;
 using Perspex.Styling;
 using Perspex.VisualTree;
+using ReactiveUI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,6 +21,9 @@ namespace Mabiavalon
     {
         public const string HeaderItemsControlPartName = "PART_HeaderItemsControl";
         public const string ItemsHolderPartName = "PART_ItemsHolder";
+
+        public ReactiveCommand<object> AddItemCommand;
+        public ReactiveCommand<object> CLoseItemCommand;
 
         private static readonly HashSet<DockControl> LoadedInstances = new HashSet<DockControl>();
 
@@ -379,7 +383,7 @@ namespace Mabiavalon
 
         public object RemoveItem(DockItem dockItem)
         {
-            var item = dockItem.GetLogicalAncestors().OfType<ItemsControl>().FirstOrDefault() as DockItemsControl;
+            var item = dockItem.GetVisualAncestors().OfType<ItemsControl>().FirstOrDefault() as DockItemsControl;
 
             var minSize = EmptyHeaderSizingHint == EmptyHeaderSizingHint.PreviousTab
                 ? new Size(_dockItemsControl.Width, _dockItemsControl.Height)
@@ -455,12 +459,152 @@ namespace Mabiavalon
 
         private void OnItemDragDelta(DockDragDeltaEventArgs e)
         {
-            throw new NotImplementedException();
+            if (!IsMyItem(e.DockItem)) return;
+
+            if (FixedHeaderCount > 0 &&
+                _dockItemsControl.ItemsOrganizer.Sort(_dockItemsControl.DockItems())
+                    .Take(FixedHeaderCount)
+                    .Contains(e.DockItem))
+                return;
+
+            if (_tabHeaderDragStartInformation == null ||
+                !Equals(_tabHeaderDragStartInformation.Item, e.DockItem) ||
+                InterTabController == null)
+                return;
+
+            if (InterTabController.InterTabClient == null)
+                throw new InvalidOperationException("An InterTabClient must be provided on an InterTabController.");
+
+            MonitorBreach(e);
+        }
+
+        private void MonitorBreach(DockDragDeltaEventArgs dockDragDeltaEventArgs)
+        {
+            var mousePositionOnHeaderItemsControl = MouseDevice.Instance.Position *
+                                                    this.TransformToVisual(_dockItemsControl);
+
+            if (!mousePositionOnHeaderItemsControl.HasValue) return;
+
+            Orientation? breachOrientation = null;
+            if (mousePositionOnHeaderItemsControl.Value.X < -InterTabController.HorizontalPopoutGrace
+                || (mousePositionOnHeaderItemsControl.Value.X - _dockItemsControl.Width) > InterTabController.HorizontalPopoutGrace)
+                breachOrientation = Orientation.Horizontal;
+            else if (mousePositionOnHeaderItemsControl.Value.Y < -InterTabController.VerticalPopoutGrace
+                     || (mousePositionOnHeaderItemsControl.Value.Y - _dockItemsControl.Height) > InterTabController.VerticalPopoutGrace)
+                breachOrientation = Orientation.Vertical;
+
+            if (!breachOrientation.HasValue) return;
+
+            var newTabHost = InterTabController.InterTabClient.GetNewHost(InterTabController.InterTabClient,
+                InterTabController.Partition, this);
+
+            if (newTabHost?.DockControl == null || newTabHost.Container == null)
+                throw new ApplicationException("New tab host was not correctly provided");
+
+            var item = _dockItemsControl.GetVisualChildren().OfType<ItemsControl>().Where(x => x.ItemContainerGenerator.IndexFromContainer())
         }
 
         private void OnItemPreviewDragDelta(DockDragDeltaEventArgs e)
         {
-            throw new NotImplementedException();
+            if (_dockItemsControl == null) return;
+
+            var sourceOfDockItemsControl = e.DockItem.GetVisualAncestors().OfType<ItemsControl>().FirstOrDefault() as DockItemsControl;
+            if (sourceOfDockItemsControl == null || !Equals(sourceOfDockItemsControl, _dockItemsControl)) return;
+
+            if (!ShouldDragWindow(sourceOfDockItemsControl)) return;
+
+            if (MonitorReentry(e)) return;
+
+            var window = this.GetVisualAncestors().OfType<Window>().FirstOrDefault();
+            if (window == null) return;
+
+            if (_interTabTransfer != null)
+            {
+                var cursorPositon = this.PointToClient(MouseDevice.Instance.Position);
+                if (_interTabTransfer.BreachOrientation == Orientation.Vertical)
+                {
+                    var vector = cursorPositon - _interTabTransfer.DragStartWindowOffset;
+                    window.Position = new Point(vector.X, vector.Y);
+                }
+                else
+                {
+                    var offset = _interTabTransfer.OriginatorContainer.MouseAtDragStart * e.DockItem.TransformToVisual(window);
+                    var borderVector = window.PointToScreen(new Point()).ToPerspex() - new Point(window.Position.X, window.Position.Y);
+                    offset.Value.WithX(borderVector.X).WithY(borderVector.Y);
+                    window.Position = new Point(cursorPositon.X - offset.Value.X, cursorPositon.Y - offset.Value.Y);
+                }
+            }
+            else
+            {
+
+                window.Position = window.Position + new Point(e.DragDeltaEventArgs.Vector.X, e.DragDeltaEventArgs.Vector.Y);
+            }
+
+            e.Handled = true;
+        }
+
+        private bool MonitorReentry(DockDragDeltaEventArgs e)
+        {
+            var screenMousePosition = MouseDevice.Instance.Position;
+
+            var sourceDockControl = (DockControl)e.Source;
+            if (((IList)sourceDockControl.Items).Count > 1 && e.DockItem.LogicalIndex < sourceDockControl.FixedHeaderCount)
+            {
+                return false;
+            }
+
+            var otherDockControls = LoadedInstances
+                .Where(
+                    dc =>
+                        dc != this && dc.InterTabController != null && InterTabController != null
+                        && Equals(dc.InterTabController.Partition, InterTabController.Partition))
+                .Select(dc =>
+                {
+                    var topLeft = dc._dockItemsControl.PointToScreen(new Point());
+                    var lastFixedItem = dc._dockItemsControl.DockItems()
+                        .OrderBy(di => di.LogicalIndex)
+                        .Take(dc._dockItemsControl.FixedItemCount)
+                        .LastOrDefault();
+
+                    if (lastFixedItem != null)
+                        topLeft.WithX(lastFixedItem.X + lastFixedItem.Width);
+
+                    var bottomRight = dc.PointToScreen(new Point(dc._dockItemsControl.Width,
+                        dc._dockItemsControl.Height));
+
+                    return new { dc, topLeft, bottomRight };
+                });
+
+            // Perspex does not yet support iterating windows on top of this,
+            // Perspex does not allow access to Application from the current library setup.
+            Window target = null;
+
+            // force fail for now
+            if (target == null) return false;
+
+            var mousePositionOnItem = screenMousePosition * e.DockItem.TransformToVisual(e.DockItem);
+
+            var floatingItemSnapShots = e.DockItem.GetVisualChildren().OfType<Layout>()
+                .SelectMany(l => l.FloatingDockItems().Select(FloatingItemSnapShot.Take))
+                .ToList();
+
+            e.DockItem.IsDropTargetFound = true;
+            var item = RemoveItem(e.DockItem);
+
+            var interTabTransfer = new InterTabTransfer(item, e.DockItem, mousePositionOnItem.Value, floatingItemSnapShots);
+            e.DockItem.IsDragging = false;
+
+            target.tc.RecieveDrag(interTabTransfer);
+            e.Cancel = true;
+
+            return true;
+        }
+
+        private bool ShouldDragWindow(DockItemsControl sourceOfDockItemsControl)
+        {
+            return (((IList)Items).Count == 1
+                    && (InterTabController == null || InterTabController.MoveWindowWithSolitaryTabs)
+                    && !Layout.IsContainedWithinBranch(sourceOfDockItemsControl));
         }
 
         private void OnItemDragCompleted(DockDragCompletedEventArgs e)
