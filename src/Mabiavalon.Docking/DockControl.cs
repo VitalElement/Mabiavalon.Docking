@@ -397,7 +397,7 @@ namespace Mabiavalon
             RemoveFromSource(item);
             _itemsHolder.Children.Remove(contentPresenter);
 
-            if (((ICollection)Items).Count != 0) return item;
+            if (((IList)Items).Count != 0) return item;
 
             var window = this.GetVisualAncestors().OfType<Window>().FirstOrDefault();
             if (window != null
