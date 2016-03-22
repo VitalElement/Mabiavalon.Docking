@@ -12,14 +12,15 @@ namespace Mabiavalon.Docking.TestApplication
         public App()
         {
             RegisterServices();
-            InitializeSubsystems((int)Environment.OSVersion.Platform);
-            Styles = new DefaultTheme();
+            InitializeSubsystems((int)Environment.OSVersion.Platform);            
             PerspexXamlLoader.Load(this);
         }
 
         static void Main(string[] args)
         {
             var app = new App();
+
+            var dockControl = new DockControl();
             var window = new MainWindow();
             window.Show();
             app.Run(window);
