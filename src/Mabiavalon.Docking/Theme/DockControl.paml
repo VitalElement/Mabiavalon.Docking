@@ -1,0 +1,15 @@
+﻿<Styles xmlns="https://github.com/perspex" xmlns:local="clr-namespace:Mabiavalon;assembly=Mabiavalon.Docking">
+  <Style Selector="local|DockControl">
+    <Setter Property="Background" Value="#1e1e1e"/>
+    <Setter Property="BorderBrush" Value="#ff707070"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border>
+          <TextBlock Text="This is from DockControl" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>

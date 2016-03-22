@@ -1,5 +1,6 @@
 ﻿using Mabiavalon.Core;
 using Mabiavalon.Docking;
+using Mabiavalon.Theme;
 using Perspex;
 using Perspex.Controls;
 using Perspex.Controls.Presenters;
@@ -151,7 +152,7 @@ namespace Mabiavalon
 
         public DockControl()
         {
-
+            Styles.Add(new DockTheme());
         }
 
         public Style CustomHeaderItemStyle
